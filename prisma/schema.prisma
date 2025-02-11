@@ -12,3 +12,69 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+
+
+model Post {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  title     String
+  slug      String   @unique // For SEO-friendly URLs
+  content   String?  // Make content optional
+  excerpt   String? // A short summary
+
+  author    User     @relation(fields: [authorId], references: [id])
+  authorId  Int
+
+  categories Category[] @relation("PostCategory") // Many-to-many relationship
+
+  // Optional: Add tags
+  tags      Tag[]      @relation("PostTag")
+
+  // Optional: Add a cover image
+  coverImage String?
+
+  // Optional: Add comments
+  comments  Comment[]
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String   @unique
+  password  String // Store securely (hash it!)
+  posts     Post[]
+  role      Role     @default(USER) // Add a role field (e.g., ADMIN, USER)
+
+  Comment Comment[]
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+model Category {
+  id    Int    @id @default(autoincrement())
+  name  String @unique
+  slug  String @unique // For SEO-friendly URLs
+  posts Post[] @relation("PostCategory")
+}
+
+model Tag {
+  id    Int    @id @default(autoincrement())
+  name  String @unique
+  slug  String @unique // For SEO-friendly URLs
+  posts Post[] @relation("PostTag")
+}
+
+model Comment {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  content   String
+  post      Post     @relation(fields: [postId], references: [id])
+  postId    Int
+  user      User     @relation(fields: [userId], references: [id]) // Comments are associated with users
+  userId    Int
+}
