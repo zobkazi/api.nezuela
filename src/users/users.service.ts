@@ -10,12 +10,14 @@ import * as bcrypt from 'bcryptjs'; // Import bcrypt
 
 @Injectable()
 export class UsersService {
+  constructor(private prisma: PrismaService) {}
+
+  // Find user by email
   async findByEmail(email: string) {
     return this.prisma.user.findUnique({ where: { email } });
   }
-  constructor(private prisma: PrismaService) {}
 
-  // Create User with Password Hashing & Duplicate Email Check
+  // Create user with password hashing and duplicate email check
   async create(data: CreateUserDto) {
     // Check if email already exists
     const existingUser = await this.prisma.user.findUnique({
@@ -25,7 +27,7 @@ export class UsersService {
       throw new ConflictException('User with this email already exists');
     }
 
-    // Hash the password before storing it
+    // Hash password before saving to database
     const hashedPassword = await bcrypt.hash(data.password, 10);
 
     return this.prisma.user.create({
@@ -37,7 +39,7 @@ export class UsersService {
     });
   }
 
-  // Get all users (Exclude password)
+  // Get all users (exclude password)
   async findAll() {
     return this.prisma.user.findMany({
       select: {
@@ -49,7 +51,7 @@ export class UsersService {
     });
   }
 
-  // Get a single user by ID (Exclude password)
+  // Get a single user by ID (exclude password)
   async findOne(id: number) {
     const user = await this.prisma.user.findUnique({
       where: { id },
@@ -69,15 +71,13 @@ export class UsersService {
 
   // Update user (password hashing included)
   async update(id: number, data: UpdateUserDto) {
-    // Check if user exists
     const user = await this.prisma.user.findUnique({ where: { id } });
     if (!user) {
       throw new NotFoundException(`User with ID ${id} not found`);
     }
 
-    // If updating password, hash it
     if (data.password) {
-      data.password = await bcrypt.hash(data.password, 10);
+      data.password = await bcrypt.hash(data.password, 10); // Hash new password
     }
 
     return this.prisma.user.update({
@@ -88,7 +88,6 @@ export class UsersService {
 
   // Delete user
   async remove(id: number) {
-    // Check if user exists
     const user = await this.prisma.user.findUnique({ where: { id } });
     if (!user) {
       throw new NotFoundException(`User with ID ${id} not found`);
