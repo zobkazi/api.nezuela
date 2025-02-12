@@ -1,7 +1,14 @@
-// post.controller.ts
-import { Controller, Post, Body, Get, Param, Delete, Put, Query } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  Get,
+  Param,
+  Delete,
+  Query,
+} from '@nestjs/common';
 import { PostService } from './post.service';
-import { CreatePostDto, UpdatePostDto } from './dto/post.dto';
+import { CreatePostDto } from './dto/create-post.dto';
 import { ApiQuery } from '@nestjs/swagger';
 
 @Controller('posts')
@@ -23,27 +30,34 @@ export class PostController {
   @ApiQuery({ name: 'tags', required: false, isArray: true, type: String })
   @ApiQuery({ name: 'sortBy', required: false, enum: ['asc', 'desc'] })
   async findAll(
-    @Query('page') page?: number,
-    @Query('limit') limit?: number,
+    @Query('page') page?: string,
+    @Query('limit') limit?: string,
     @Query('search') search?: string,
     @Query('category') category?: string,
-    @Query('tags') tags?: string[],
+    @Query('tags') tags?: string,
     @Query('sortBy') sortBy?: 'asc' | 'desc',
   ) {
-    return this.postService.findAll({ page, limit, search, category, tags, sortBy });
+    return this.postService.findAll({
+      page: page ? Number(page) : undefined,
+      limit: limit ? Number(limit) : undefined,
+      search,
+      category,
+      tags: tags ? tags.split(',') : undefined,
+      sortBy,
+    });
   }
 
-  // Get One Post by ID
-  @Get(':id')
-  async findOne(@Param('id') id: string) {
-    return this.postService.findOne(Number(id));
-  }
+  // // Get One Post by ID
+  // @Get(':id')
+  // async findOne(@Param('id') id: string) {
+  //   return this.postService.findOne(Number(id));
+  // }
 
-  // Update Post
-  @Put(':id')
-  async update(@Param('id') id: string, @Body() updatePostDto: UpdatePostDto) {
-    return this.postService.update(Number(id), updatePostDto);
-  }
+  // // Update Post
+  // @Put(':id')
+  // async update(@Param('id') id: string, @Body() updatePostDto: UpdatePostDto) {
+  //   return this.postService.update(Number(id), updatePostDto);
+  // }
 
   // Delete Post
   @Delete(':id')

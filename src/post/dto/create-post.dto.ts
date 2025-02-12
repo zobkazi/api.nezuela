@@ -1,11 +1,55 @@
-// create-post.dto.ts
+import {
+  IsString,
+  IsNotEmpty,
+  IsOptional,
+  IsArray,
+  IsNumber,
+} from 'class-validator';
+
 export class CreatePostDto {
+  @IsString()
+  @IsNotEmpty()
   title: string;
+
+  @IsString()
+  @IsNotEmpty()
+  content: string;
+
+  @IsString()
+  @IsNotEmpty()
   slug: string;
-  content?: string;
-  excerpt?: string;
-  coverImage?: string;
+
+  @IsNumber()
+  @IsNotEmpty()
   authorId: number;
-  categoryIds: number[];
-  tagIds: number[];
+
+  @IsNumber()
+  @IsNotEmpty()
+  categoryId: number;
+
+  @IsArray()
+  @IsOptional()
+  tags?: string[];
+}
+
+export class UpdatePostDto {
+  @IsString()
+  @IsOptional()
+  title?: string;
+
+  @IsString()
+  @IsOptional()
+  content?: string;
+
+  @IsString()
+  @IsOptional()
+  slug?: string;
+
+  @IsNumber()
+  @IsOptional()
+  categoryId?: number;
+
+  @IsArray()
+  @IsOptional()
+  tags?: string[];
 }

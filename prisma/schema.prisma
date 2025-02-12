@@ -1,8 +1,5 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+// This is your Prisma schema file
+// Learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
   provider = "prisma-client-js"
@@ -13,41 +10,38 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
-
 model Post {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  title     String
-  slug      String   @unique // For SEO-friendly URLs
-  content   String?  // Make content optional
-  excerpt   String? // A short summary
+  id          Int       @id @default(autoincrement())
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  title       String
+  slug        String    @unique // SEO-friendly URLs
+  content     String?   // Optional content
+  excerpt     String?   // Short summary
+  coverImage  String?   // Optional cover image
+  
+  // Relations
+  author      User      @relation(fields: [authorId], references: [id])
+  authorId    Int
+  
+  // Many-to-many relations
+  categories  PostCategory[]
+  tags        PostTag[]
 
-  author    User     @relation(fields: [authorId], references: [id])
-  authorId  Int
-
-  categories Category[] @relation("PostCategory") // Many-to-many relationship
-
-  // Optional: Add tags
-  tags      Tag[]      @relation("PostTag")
-
-  // Optional: Add a cover image
-  coverImage String?
-
-  // Optional: Add comments
-  comments  Comment[]
+  // Comments
+  comments    Comment[]
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  name      String
-  email     String   @unique
-  password  String // Store securely (hash it!)
-  posts     Post[]
-  role      Role     @default(USER) // Add a role field (e.g., ADMIN, USER)
-
-  Comment Comment[]
+  id       Int      @id @default(autoincrement())
+  name     String
+  email    String   @unique
+  password String   // Store securely (hashed)
+  role     Role     @default(USER) // Role field (ADMIN, USER)
+  
+  // Relations
+  posts    Post[]
+  comments Comment[]
 }
 
 enum Role {
@@ -55,26 +49,52 @@ enum Role {
   ADMIN
 }
 
+// Many-to-Many Relationship between Posts and Categories
+model PostCategory {
+  postId     Int
+  categoryId Int
+  post       Post      @relation(fields: [postId], references: [id], onDelete: Cascade)
+  category   Category  @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  @@id([postId, categoryId]) // Composite primary key
+}
+
+// Many-to-Many Relationship between Posts and Tags
+model PostTag {
+  postId  Int
+  tagId   Int
+  post    Post  @relation(fields: [postId], references: [id], onDelete: Cascade)
+  tag     Tag   @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([postId, tagId]) // Composite primary key
+}
+
 model Category {
   id    Int    @id @default(autoincrement())
   name  String @unique
-  slug  String @unique // For SEO-friendly URLs
-  posts Post[] @relation("PostCategory")
+  slug  String @unique // SEO-friendly URLs
+  
+  // Relations
+  posts PostCategory[]
 }
 
 model Tag {
   id    Int    @id @default(autoincrement())
   name  String @unique
-  slug  String @unique // For SEO-friendly URLs
-  posts Post[] @relation("PostTag")
+  slug  String @unique // SEO-friendly URLs
+
+  // Relations
+  posts PostTag[]
 }
 
 model Comment {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
   content   String
-  post      Post     @relation(fields: [postId], references: [id])
+
+  // Relations
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
   postId    Int
-  user      User     @relation(fields: [userId], references: [id]) // Comments are associated with users
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId    Int
 }

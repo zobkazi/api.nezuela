@@ -1,15 +1,49 @@
-// post.service.ts
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { Prisma, Post } from '@prisma/client';
+import { CreatePostDto } from './dto/create-post.dto';
 
 @Injectable()
 export class PostService {
   constructor(private prisma: PrismaService) {}
 
   // Create Post
-  async create(data: Prisma.PostCreateInput): Promise<Post> {
-    return this.prisma.post.create({ data });
+  async create(data: CreatePostDto): Promise<Post> {
+    return this.prisma.post.create({
+      data: {
+        title: data.title,
+        content: data.content,
+        slug: data.slug,
+        author: {
+          connect: { id: data.authorId },
+        },
+        categories: {
+          create: data.categoryId
+            ? [{ category: { connect: { id: data.categoryId } } }]
+            : [],
+        },
+        tags: {
+          create: data.tags
+            ? data.tags.map((tagId) => ({
+                tag: { connect: { id: parseInt(tagId) } },
+              }))
+            : [],
+        },
+      },
+      include: {
+        author: true,
+        categories: {
+          include: {
+            category: true,
+          },
+        },
+        tags: {
+          include: {
+            tag: true,
+          },
+        },
+      },
+    });
   }
 
   // Get Paginated, Sorted, Filtered, and Searched Posts
@@ -21,15 +55,50 @@ export class PostService {
     tags?: string[];
     sortBy?: 'asc' | 'desc';
   }): Promise<{ posts: Post[]; total: number }> {
-    const { page = 1, limit = 10, search, category, tags, sortBy = 'desc' } = query;
+    const {
+      page = 1,
+      limit = 10,
+      search,
+      category,
+      tags,
+      sortBy = 'desc',
+    } = query;
+
     const skip = (page - 1) * limit;
 
     const where: Prisma.PostWhereInput = {
-      OR: search
-        ? [{ title: { contains: search, mode: 'insensitive' } }, { content: { contains: search, mode: 'insensitive' } }]
-        : undefined,
-      category: category ? { name: category } : undefined,
-      tags: tags?.length ? { some: { name: { in: tags } } } : undefined,
+      AND: [
+        search
+          ? {
+              OR: [
+                { title: { contains: search, mode: 'insensitive' } },
+                { content: { contains: search, mode: 'insensitive' } },
+              ],
+            }
+          : undefined,
+        category
+          ? {
+              categories: {
+                some: {
+                  category: {
+                    name: { equals: category, mode: 'insensitive' },
+                  },
+                },
+              },
+            }
+          : undefined,
+        tags?.length
+          ? {
+              tags: {
+                some: {
+                  tag: {
+                    name: { in: tags },
+                  },
+                },
+              },
+            }
+          : undefined,
+      ].filter(Boolean) as Prisma.PostWhereInput[],
     };
 
     const [posts, total] = await Promise.all([
@@ -38,7 +107,19 @@ export class PostService {
         skip,
         take: limit,
         orderBy: { createdAt: sortBy },
-        include: { category: true, tags: true },
+        include: {
+          author: true,
+          categories: {
+            include: {
+              category: true,
+            },
+          },
+          tags: {
+            include: {
+              tag: true,
+            },
+          },
+        },
       }),
       this.prisma.post.count({ where }),
     ]);
@@ -46,21 +127,66 @@ export class PostService {
     return { posts, total };
   }
 
-  // Get One Post by ID
-  async findOne(id: number): Promise<Post | null> {
-    return this.prisma.post.findUnique({
-      where: { id },
-      include: { category: true, tags: true },
-    });
-  }
+  // // Update Post
+  // async update(id: number, data: UpdatePostDto): Promise<Post> {
+  //   const updateData: Prisma.PostUpdateInput = {
+  //     title: data.title,
+  //     content: data.content,
+  //     slug: data.slug,
+  //   };
 
-  // Update Post
-  async update(id: number, data: Prisma.PostUpdateInput): Promise<Post> {
-    return this.prisma.post.update({ where: { id }, data });
-  }
+  //   if (data.categoryId) {
+  //     updateData.categories = {
+  //       deleteMany: {},
+  //       create: [{ category: { connect: { id: data.categoryId } } }],
+  //     };
+  //   }
+
+  //   if (data.tags) {
+  //     updateData.tags = {
+  //       deleteMany: {},
+  //       create: data.tags.map((tagId) => ({
+  //         tag: { connect: { id: parseInt(tagId) } },
+  //       })),
+  //     };
+  //   }
+
+  //   return this.prisma.post.update({
+  //     where: { id },
+  //     data: updateData,
+  //     include: {
+  //       author: true,
+  //       categories: {
+  //         include: {
+  //           category: true,
+  //         },
+  //       },
+  //       tags: {
+  //         include: {
+  //           tag: true,
+  //         },
+  //       },
+  //     },
+  //   });
+  // }
 
   // Delete Post
   async delete(id: number): Promise<Post> {
-    return this.prisma.post.delete({ where: { id } });
+    return this.prisma.post.delete({
+      where: { id },
+      include: {
+        author: true,
+        categories: {
+          include: {
+            category: true,
+          },
+        },
+        tags: {
+          include: {
+            tag: true,
+          },
+        },
+      },
+    });
   }
 }
