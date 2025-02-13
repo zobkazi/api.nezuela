@@ -6,22 +6,22 @@ import { CreateCommentDto } from './dto/create-comment.dto';
 export class CommentService {
   constructor(private prisma: PrismaService) {}
 
-  async create(createCommentDto: CreateCommentDto) {
+  async create(CreateCommentDto: CreateCommentDto) {
     
      // Check if comment already exist
-     const existingTag = await this.prisma.tag.findUnique({
-      where: { name: CreateCommentDto.name },
+     const existingComment = await this.prisma.comment.findFirst({
+      where: { content: CreateCommentDto.content },
     });
-    if (existingTag) {
+    if (existingComment) {
       throw new ConflictException('Tag already exists');
     }
 
 
     return this.prisma.comment.create({
       data: {
-        content: createCommentDto.content,
-        postId: createCommentDto.postId,
-        userId: createCommentDto.userId,
+        content: CreateCommentDto.content,
+        postId: CreateCommentDto.postId,
+        userId: CreateCommentDto.userId,
       },
     });
   }

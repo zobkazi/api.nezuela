@@ -30,6 +30,7 @@ export class CreatePostDto {
   @IsArray()
   @IsOptional()
   tags?: string[];
+  static title: any;
 }
 
 export class UpdatePostDto {

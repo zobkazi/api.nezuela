@@ -4,18 +4,23 @@ import {
   Body,
   Get,
   Param,
+  Put,
   Delete,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { PostService } from './post.service';
-import { CreatePostDto } from './dto/create-post.dto';
+import { CreatePostDto, UpdatePostDto } from './dto/create-post.dto';
 import { ApiQuery } from '@nestjs/swagger';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+
 
 @Controller('posts')
 export class PostController {
   constructor(private readonly postService: PostService) {}
 
   // Create Post
+  @UseGuards(JwtAuthGuard)
   @Post()
   async create(@Body() createPostDto: CreatePostDto) {
     return this.postService.create(createPostDto);
@@ -47,17 +52,17 @@ export class PostController {
     });
   }
 
-  // // Get One Post by ID
-  // @Get(':id')
-  // async findOne(@Param('id') id: string) {
-  //   return this.postService.findOne(Number(id));
-  // }
+  // Get One Post by ID
+  @Get(':id')
+  async findOne(@Param('id') id: string) {
+    return this.postService.findOne(Number(id));
+  }
 
-  // // Update Post
-  // @Put(':id')
-  // async update(@Param('id') id: string, @Body() updatePostDto: UpdatePostDto) {
-  //   return this.postService.update(Number(id), updatePostDto);
-  // }
+  // Update Post
+  @Put(':id')
+  async update(@Param('id') id: string, @Body() updatePostDto: UpdatePostDto) {
+    return this.postService.update(Number(id), updatePostDto);
+  }
 
   // Delete Post
   @Delete(':id')

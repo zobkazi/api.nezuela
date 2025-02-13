@@ -1,23 +1,24 @@
 import { Injectable, ConflictException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { Prisma, Post } from '@prisma/client';
-import { CreatePostDto } from './dto/create-post.dto';
+import { CreatePostDto, UpdatePostDto } from './dto/create-post.dto';
 
 @Injectable()
 export class PostService {
+  findOne(arg0: number) {
+    throw new Error('Method not implemented.');
+  }
   constructor(private prisma: PrismaService) {}
 
   // Create Post
   async create(data: CreatePostDto): Promise<Post> {
-    
-     // Check if post already exist
-     const existingTag = await this.prisma.tag.findUnique({
-      where: { name: CreatePostDto.name },
+    // Check if post already exist
+    const existingPost = await this.prisma.post.findUnique({
+      where: { slug: data.slug },
     });
-    if (existingTag) {
-      throw new ConflictException('Tag already exists');
+    if (existingPost) {
+      throw new ConflictException('Post already exists');
     }
-
 
     return this.prisma.post.create({
       data: {
@@ -137,48 +138,48 @@ export class PostService {
     return { posts, total };
   }
 
-  // // Update Post
-  // async update(id: number, data: UpdatePostDto): Promise<Post> {
-  //   const updateData: Prisma.PostUpdateInput = {
-  //     title: data.title,
-  //     content: data.content,
-  //     slug: data.slug,
-  //   };
+  // Update Post
+  async update(id: number, data: UpdatePostDto): Promise<Post> {
+    const updateData: Prisma.PostUpdateInput = {
+      title: data.title,
+      content: data.content,
+      slug: data.slug,
+    };
 
-  //   if (data.categoryId) {
-  //     updateData.categories = {
-  //       deleteMany: {},
-  //       create: [{ category: { connect: { id: data.categoryId } } }],
-  //     };
-  //   }
+    if (data.categoryId) {
+      updateData.categories = {
+        deleteMany: {},
+        create: [{ category: { connect: { id: data.categoryId } } }],
+      };
+    }
 
-  //   if (data.tags) {
-  //     updateData.tags = {
-  //       deleteMany: {},
-  //       create: data.tags.map((tagId) => ({
-  //         tag: { connect: { id: parseInt(tagId) } },
-  //       })),
-  //     };
-  //   }
+    if (data.tags) {
+      updateData.tags = {
+        deleteMany: {},
+        create: data.tags.map((tagId) => ({
+          tag: { connect: { id: parseInt(tagId) } },
+        })),
+      };
+    }
 
-  //   return this.prisma.post.update({
-  //     where: { id },
-  //     data: updateData,
-  //     include: {
-  //       author: true,
-  //       categories: {
-  //         include: {
-  //           category: true,
-  //         },
-  //       },
-  //       tags: {
-  //         include: {
-  //           tag: true,
-  //         },
-  //       },
-  //     },
-  //   });
-  // }
+    return this.prisma.post.update({
+      where: { id },
+      data: updateData,
+      include: {
+        author: true,
+        categories: {
+          include: {
+            category: true,
+          },
+        },
+        tags: {
+          include: {
+            tag: true,
+          },
+        },
+      },
+    });
+  }
 
   // Delete Post
   async delete(id: number): Promise<Post> {
