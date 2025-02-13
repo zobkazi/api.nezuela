@@ -18,7 +18,6 @@ export class TagController {
     return this.tagService.findAll();
   }
 
-  @UseGuards(JwtAuthGuard)
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.tagService.findOne(Number(id));
