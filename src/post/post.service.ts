@@ -42,7 +42,6 @@ export class PostService {
         },
       },
       include: {
-        author: true,
         categories: {
           include: {
             category: true,
@@ -119,7 +118,6 @@ export class PostService {
         take: limit,
         orderBy: { createdAt: sortBy },
         include: {
-          author: true,
           categories: {
             include: {
               category: true,
@@ -144,6 +142,8 @@ export class PostService {
       title: data.title,
       content: data.content,
       slug: data.slug,
+      coverImage: data.coverImage,
+      excerpt: data.excerpt
     };
 
     if (data.categoryId) {
@@ -165,19 +165,18 @@ export class PostService {
     return this.prisma.post.update({
       where: { id },
       data: updateData,
-      include: {
-        author: true,
-        categories: {
-          include: {
-            category: true,
-          },
-        },
-        tags: {
-          include: {
-            tag: true,
-          },
-        },
-      },
+      // include: {
+      //   categories: {
+      //     include: {
+      //       category: true,
+      //     },
+      //   },
+      //   tags: {
+      //     include: {
+      //       tag: true,
+      //     },
+      //   },
+      // },
     });
   }
 
@@ -185,19 +184,7 @@ export class PostService {
   async delete(id: number): Promise<Post> {
     return this.prisma.post.delete({
       where: { id },
-      include: {
-        author: true,
-        categories: {
-          include: {
-            category: true,
-          },
-        },
-        tags: {
-          include: {
-            tag: true,
-          },
-        },
-      },
+      
     });
   }
 }

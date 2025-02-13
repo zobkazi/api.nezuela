@@ -9,11 +9,11 @@ export class CategoryService {
   async create(createCategoryDto: CreateCategoryDto) {
     
      // Check if category already exist
-     const existingTag = await this.prisma.tag.findUnique({
+     const existingCategory = await this.prisma.category.findUnique({
       where: { name: CreateCategoryDto.name },
     });
-    if (existingTag) {
-      throw new ConflictException('Tag already exists');
+    if (existingCategory) {
+      throw new ConflictException('Category already exists');
     }
 
     

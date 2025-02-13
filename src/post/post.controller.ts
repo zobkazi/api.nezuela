@@ -1,3 +1,4 @@
+// src/post/post.controller.ts
 import {
   Controller,
   Post,
@@ -13,6 +14,7 @@ import { PostService } from './post.service';
 import { CreatePostDto, UpdatePostDto } from './dto/create-post.dto';
 import { ApiQuery } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+
 
 
 @Controller('posts')
@@ -59,12 +61,14 @@ export class PostController {
   }
 
   // Update Post
+  @UseGuards(JwtAuthGuard)
   @Put(':id')
   async update(@Param('id') id: string, @Body() updatePostDto: UpdatePostDto) {
     return this.postService.update(Number(id), updatePostDto);
   }
 
   // Delete Post
+  @UseGuards(JwtAuthGuard)
   @Delete(':id')
   async delete(@Param('id') id: string) {
     return this.postService.delete(Number(id));

@@ -30,7 +30,6 @@ export class CreatePostDto {
   @IsArray()
   @IsOptional()
   tags?: string[];
-  static title: any;
 }
 
 export class UpdatePostDto {
@@ -53,4 +52,13 @@ export class UpdatePostDto {
   @IsArray()
   @IsOptional()
   tags?: string[];
+
+
+  @IsOptional()
+  @IsString()
+  coverImage?: string;
+
+  @IsString()
+  @IsOptional()
+  excerpt?: string
 }
