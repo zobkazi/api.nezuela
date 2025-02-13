@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, ConflictException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { Prisma, Post } from '@prisma/client';
 import { CreatePostDto } from './dto/create-post.dto';
@@ -9,6 +9,16 @@ export class PostService {
 
   // Create Post
   async create(data: CreatePostDto): Promise<Post> {
+    
+     // Check if post already exist
+     const existingTag = await this.prisma.tag.findUnique({
+      where: { name: CreatePostDto.name },
+    });
+    if (existingTag) {
+      throw new ConflictException('Tag already exists');
+    }
+
+
     return this.prisma.post.create({
       data: {
         title: data.title,

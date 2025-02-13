@@ -1,6 +1,3 @@
-// This is your Prisma schema file
-// Learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -11,79 +8,60 @@ datasource db {
 }
 
 model Post {
-  id          Int       @id @default(autoincrement())
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  title       String
-  slug        String    @unique // SEO-friendly URLs
-  content     String?   // Optional content
-  excerpt     String?   // Short summary
-  coverImage  String?   // Optional cover image
-  
-  // Relations
-  author      User      @relation(fields: [authorId], references: [id])
-  authorId    Int
-  
-  // Many-to-many relations
-  categories  PostCategory[]
-  tags        PostTag[]
-
-  // Comments
-  comments    Comment[]
+  id         Int            @id @default(autoincrement())
+  createdAt  DateTime       @default(now())
+  updatedAt  DateTime       @updatedAt
+  title      String
+  slug       String         @unique
+  content    String?
+  excerpt    String?
+  authorId   Int
+  coverImage String?
+  comments   Comment[]
+  author     User           @relation(fields: [authorId], references: [id])
+  categories PostCategory[]
+  tags       PostTag[]
 }
 
 model User {
-  id       Int      @id @default(autoincrement())
+  id       Int       @id @default(autoincrement())
   name     String
-  email    String   @unique
-  password String   // Store securely (hashed)
-  role     Role     @default(USER) // Role field (ADMIN, USER)
-  
-  // Relations
-  posts    Post[]
+  email    String    @unique
+  password String
+  role     Role      @default(USER)
   comments Comment[]
+  posts    Post[]
 }
 
-enum Role {
-  USER
-  ADMIN
-}
-
-// Many-to-Many Relationship between Posts and Categories
 model PostCategory {
   postId     Int
   categoryId Int
-  post       Post      @relation(fields: [postId], references: [id], onDelete: Cascade)
-  category   Category  @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  post       Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
 
-  @@id([postId, categoryId]) // Composite primary key
+  @@id([postId, categoryId])
 }
 
-// Many-to-Many Relationship between Posts and Tags
 model PostTag {
-  postId  Int
-  tagId   Int
-  post    Post  @relation(fields: [postId], references: [id], onDelete: Cascade)
-  tag     Tag   @relation(fields: [tagId], references: [id], onDelete: Cascade)
+  postId Int
+  tagId  Int
+  post   Post @relation(fields: [postId], references: [id], onDelete: Cascade)
+  tag    Tag  @relation(fields: [tagId], references: [id], onDelete: Cascade)
 
-  @@id([postId, tagId]) // Composite primary key
+  @@id([postId, tagId])
 }
 
 model Category {
-  id    Int    @id @default(autoincrement())
-  name  String @unique
-  slug  String @unique // SEO-friendly URLs
-  
-  // Relations
+  id    Int            @id @default(autoincrement())
+  name  String         @unique
+  slug  String         @unique
   posts PostCategory[]
 }
 
 model Tag {
-  id    Int    @id @default(autoincrement())
-  name  String @unique
-  slug  String @unique // SEO-friendly URLs
-
-  // Relations
+  id    Int       @id @default(autoincrement())
+  name  String    @unique
+  slug  String    @unique
   posts PostTag[]
 }
 
@@ -91,10 +69,13 @@ model Comment {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
   content   String
-
-  // Relations
-  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
   postId    Int
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId    Int
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+enum Role {
+  USER
+  ADMIN
 }

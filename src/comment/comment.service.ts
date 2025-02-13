@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, ConflictException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateCommentDto } from './dto/create-comment.dto';
 
@@ -7,6 +7,16 @@ export class CommentService {
   constructor(private prisma: PrismaService) {}
 
   async create(createCommentDto: CreateCommentDto) {
+    
+     // Check if comment already exist
+     const existingTag = await this.prisma.tag.findUnique({
+      where: { name: CreateCommentDto.name },
+    });
+    if (existingTag) {
+      throw new ConflictException('Tag already exists');
+    }
+
+
     return this.prisma.comment.create({
       data: {
         content: createCommentDto.content,
