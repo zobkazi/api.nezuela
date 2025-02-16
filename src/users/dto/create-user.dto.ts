@@ -8,7 +8,7 @@ export class CreateUserDto {
 
   @IsString()
   @MinLength(3)
-  lastName: string
+  lastName: string;
 
   @IsEmail()
   email: string;
@@ -18,18 +18,17 @@ export class CreateUserDto {
   password: string;
 
   @IsString()
-  confirmPassword: string
+  confirmPassword: string;
 
   @IsString()
   @IsOptional()
-  profileImages?: string
+  profileImages?: string;
 
   @IsString()
   @IsOptional()
-  bio?: string
+  bio?: string;
 
   @IsString()
   @IsOptional()
-  link?: string
-  
+  link?: string;
 }

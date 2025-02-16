@@ -145,7 +145,7 @@ let PostService = class PostService {
             content: data.content,
             slug: data.slug,
             coverImage: data.coverImage,
-            excerpt: data.excerpt
+            excerpt: data.excerpt,
         };
         if (data.categoryId) {
             updateData.categories = {

@@ -28,7 +28,7 @@ describe('Authentication System (e2e)', () => {
           password: 'wrongpassword',
         })
         .expect(401)
-        .expect(res => {
+        .expect((res) => {
           expect(res.body).toHaveProperty('message');
           expect(res.body.message).toContain('Invalid credentials');
         });
@@ -39,7 +39,7 @@ describe('Authentication System (e2e)', () => {
         .post('/auth/login')
         .send({})
         .expect(400)
-        .expect(res => {
+        .expect((res) => {
           expect(res.body).toHaveProperty('message');
           expect(res.body.message).toContain('Validation failed');
         });
@@ -55,7 +55,7 @@ describe('Authentication System (e2e)', () => {
         .post('/auth/login')
         .send(validCredentials)
         .expect(200)
-        .expect(res => {
+        .expect((res) => {
           expect(res.body).toHaveProperty('access_token');
           expect(typeof res.body.access_token).toBe('string');
         });

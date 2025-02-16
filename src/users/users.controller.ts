@@ -84,7 +84,10 @@ export class UsersController {
     @Body(ValidationPipe) updateUserDto: UpdateUserDto,
   ) {
     try {
-      const updatedUser = await this.usersService.update(Number(id), updateUserDto);
+      const updatedUser = await this.usersService.update(
+        Number(id),
+        updateUserDto,
+      );
       return {
         success: true,
         data: updatedUser,

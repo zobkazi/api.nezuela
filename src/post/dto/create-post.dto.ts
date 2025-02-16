@@ -53,12 +53,11 @@ export class UpdatePostDto {
   @IsOptional()
   tags?: string[];
 
-
   @IsOptional()
   @IsString()
   coverImage?: string;
 
   @IsString()
   @IsOptional()
-  excerpt?: string
+  excerpt?: string;
 }

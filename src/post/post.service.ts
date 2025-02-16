@@ -5,7 +5,6 @@ import { CreatePostDto, UpdatePostDto } from './dto/create-post.dto';
 
 @Injectable()
 export class PostService {
-
   constructor(private prisma: PrismaService) {}
 
   // Create Post
@@ -150,11 +149,11 @@ export class PostService {
         },
       },
     });
-  
+
     if (!post) {
       throw new Error(`Post with ID ${id} not found`);
     }
-  
+
     return post;
   }
 
@@ -165,7 +164,7 @@ export class PostService {
       content: data.content,
       slug: data.slug,
       coverImage: data.coverImage,
-      excerpt: data.excerpt
+      excerpt: data.excerpt,
     };
 
     if (data.categoryId) {
@@ -206,7 +205,6 @@ export class PostService {
   async delete(id: number): Promise<Post> {
     return this.prisma.post.delete({
       where: { id },
-      
     });
   }
 }

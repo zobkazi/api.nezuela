@@ -15,8 +15,6 @@ import { CreatePostDto, UpdatePostDto } from './dto/create-post.dto';
 import { ApiQuery } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
-
-
 @Controller('posts')
 export class PostController {
   constructor(private readonly postService: PostService) {}
@@ -54,15 +52,15 @@ export class PostController {
     });
   }
 
-// Get One Post by ID
-@Get(':id')
-async findOne(@Param('id') id: string) {
-  const post = await this.postService.findOne(Number(id));
-  if (!post) {
-    throw new Error(`Post not found`);
+  // Get One Post by ID
+  @Get(':id')
+  async findOne(@Param('id') id: string) {
+    const post = await this.postService.findOne(Number(id));
+    if (!post) {
+      throw new Error(`Post not found`);
+    }
+    return post;
   }
-  return post;
-}
 
   // Update Post
   @UseGuards(JwtAuthGuard)

@@ -1,4 +1,12 @@
-import { Controller, Post, Get, Body, Param, Delete, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Get,
+  Body,
+  Param,
+  Delete,
+  UseGuards,
+} from '@nestjs/common';
 import { TagService } from './tag.service';
 import { CreateTagDto } from './dto/create-tag.dto';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
@@ -7,7 +15,7 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 export class TagController {
   constructor(private readonly tagService: TagService) {}
 
-   @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
   @Post()
   create(@Body() createTagDto: CreateTagDto) {
     return this.tagService.create(createTagDto);

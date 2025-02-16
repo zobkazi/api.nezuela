@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException, ConflictException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  ConflictException,
+} from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { UpdateCommentDto } from './dto/update-comment.dto';
@@ -8,15 +12,13 @@ export class CommentService {
   constructor(private prisma: PrismaService) {}
 
   async create(CreateCommentDto: CreateCommentDto) {
-    
-     // Check if comment already exist
-     const existingComment = await this.prisma.comment.findFirst({
+    // Check if comment already exist
+    const existingComment = await this.prisma.comment.findFirst({
       where: { content: CreateCommentDto.content },
     });
     if (existingComment) {
       throw new ConflictException('Tag already exists');
     }
-
 
     return this.prisma.comment.create({
       data: {
@@ -31,7 +33,6 @@ export class CommentService {
     return this.prisma.comment.findMany({
       include: {
         post: true,
-        
       },
     });
   }
@@ -45,8 +46,6 @@ export class CommentService {
     if (!comment) throw new NotFoundException('Comment not found');
     return comment;
   }
-
-
 
   async update(id: number, updateCommentDto: UpdateCommentDto) {
     // Check if comment exists
@@ -68,7 +67,9 @@ export class CommentService {
       });
 
       if (duplicateComment) {
-        throw new ConflictException('A comment with this content already exists');
+        throw new ConflictException(
+          'A comment with this content already exists',
+        );
       }
     }
 
@@ -78,7 +79,6 @@ export class CommentService {
       data: updateCommentDto,
     });
   }
-
 
   async remove(id: number) {
     return this.prisma.comment.delete({ where: { id } });
