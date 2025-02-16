@@ -54,11 +54,15 @@ export class PostController {
     });
   }
 
-  // Get One Post by ID
-  @Get(':id')
-  async findOne(@Param('id') id: string) {
-    return this.postService.findOne(Number(id));
+// Get One Post by ID
+@Get(':id')
+async findOne(@Param('id') id: string) {
+  const post = await this.postService.findOne(Number(id));
+  if (!post) {
+    throw new Error(`Post not found`);
   }
+  return post;
+}
 
   // Update Post
   @UseGuards(JwtAuthGuard)

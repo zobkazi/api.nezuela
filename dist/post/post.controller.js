@@ -36,7 +36,11 @@ let PostController = class PostController {
         });
     }
     async findOne(id) {
-        return this.postService.findOne(Number(id));
+        const post = await this.postService.findOne(Number(id));
+        if (!post) {
+            throw new Error(`Post not found`);
+        }
+        return post;
     }
     async update(id, updatePostDto) {
         return this.postService.update(Number(id), updatePostDto);

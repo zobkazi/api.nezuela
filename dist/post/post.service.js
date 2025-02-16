@@ -13,9 +13,6 @@ exports.PostService = void 0;
 const common_1 = require("@nestjs/common");
 const prisma_service_1 = require("../prisma/prisma.service");
 let PostService = class PostService {
-    findOne(arg0) {
-        throw new Error('Method not implemented.');
-    }
     constructor(prisma) {
         this.prisma = prisma;
     }
@@ -120,6 +117,27 @@ let PostService = class PostService {
             this.prisma.post.count({ where }),
         ]);
         return { posts, total };
+    }
+    async findOne(id) {
+        const post = await this.prisma.post.findUnique({
+            where: { id },
+            include: {
+                categories: {
+                    include: {
+                        category: true,
+                    },
+                },
+                tags: {
+                    include: {
+                        tag: true,
+                    },
+                },
+            },
+        });
+        if (!post) {
+            throw new Error(`Post with ID ${id} not found`);
+        }
+        return post;
     }
     async update(id, data) {
         const updateData = {

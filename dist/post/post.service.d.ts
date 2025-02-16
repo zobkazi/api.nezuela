@@ -3,7 +3,6 @@ import { Post } from '@prisma/client';
 import { CreatePostDto, UpdatePostDto } from './dto/create-post.dto';
 export declare class PostService {
     private prisma;
-    findOne(arg0: number): void;
     constructor(prisma: PrismaService);
     create(data: CreatePostDto): Promise<Post>;
     findAll(query: {
@@ -17,6 +16,7 @@ export declare class PostService {
         posts: Post[];
         total: number;
     }>;
+    findOne(id: number): Promise<Post>;
     update(id: number, data: UpdatePostDto): Promise<Post>;
     delete(id: number): Promise<Post>;
 }

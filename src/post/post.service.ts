@@ -5,9 +5,7 @@ import { CreatePostDto, UpdatePostDto } from './dto/create-post.dto';
 
 @Injectable()
 export class PostService {
-  findOne(arg0: number) {
-    throw new Error('Method not implemented.');
-  }
+
   constructor(private prisma: PrismaService) {}
 
   // Create Post
@@ -134,6 +132,30 @@ export class PostService {
     ]);
 
     return { posts, total };
+  }
+
+  async findOne(id: number): Promise<Post> {
+    const post = await this.prisma.post.findUnique({
+      where: { id },
+      include: {
+        categories: {
+          include: {
+            category: true,
+          },
+        },
+        tags: {
+          include: {
+            tag: true,
+          },
+        },
+      },
+    });
+  
+    if (!post) {
+      throw new Error(`Post with ID ${id} not found`);
+    }
+  
+    return post;
   }
 
   // Update Post

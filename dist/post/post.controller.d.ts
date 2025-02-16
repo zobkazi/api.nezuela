@@ -18,7 +18,17 @@ export declare class PostController {
         posts: import(".prisma/client").Post[];
         total: number;
     }>;
-    findOne(id: string): Promise<void>;
+    findOne(id: string): Promise<{
+        id: number;
+        title: string;
+        content: string | null;
+        slug: string;
+        authorId: number;
+        coverImage: string | null;
+        excerpt: string | null;
+        createdAt: Date;
+        updatedAt: Date;
+    }>;
     update(id: string, updatePostDto: UpdatePostDto): Promise<{
         id: number;
         title: string;
