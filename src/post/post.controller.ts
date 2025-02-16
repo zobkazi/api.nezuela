@@ -15,6 +15,7 @@ import { CreatePostDto, UpdatePostDto } from './dto/create-post.dto';
 import { ApiQuery } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
+
 @Controller('posts')
 export class PostController {
   constructor(private readonly postService: PostService) {}
