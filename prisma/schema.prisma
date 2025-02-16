@@ -25,9 +25,11 @@ model Post {
 
 model User {
   id       Int       @id @default(autoincrement())
-  name     String
+  firstName     String
+  lastName String
   email    String    @unique
   password String
+  confirmPassword String
   role     Role      @default(USER)
   comments Comment[]
   posts    Post[]
@@ -79,3 +81,6 @@ enum Role {
   USER
   ADMIN
 }
+
+
+
