@@ -24,17 +24,17 @@ model Post {
 }
 
 model User {
-  id              Int       @id @default(autoincrement())
-  firstName       String
-  lastName        String
-  email           String    @unique
-  password        String
-  profileImages   String?
-  bio             String?
-  link            String?
-  role            Role      @default(USER)
-  comments        Comment[]
-  posts           Post[]
+  id            Int       @id @default(autoincrement())
+  firstName     String
+  lastName      String
+  email         String    @unique
+  password      String
+  profileImages String?
+  bio           String?
+  link          String?
+  role          Role      @default(USER)
+  comments      Comment[]
+  posts         Post[]
 }
 
 model PostCategory {
