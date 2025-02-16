@@ -4,8 +4,8 @@ export declare class CategoryService {
     private prisma;
     constructor(prisma: PrismaService);
     create(createCategoryDto: CreateCategoryDto): Promise<{
-        name: string;
         id: number;
+        name: string;
         slug: string;
     }>;
     findAll(): Promise<({
@@ -14,8 +14,8 @@ export declare class CategoryService {
             postId: number;
         }[];
     } & {
-        name: string;
         id: number;
+        name: string;
         slug: string;
     })[]>;
     findOne(id: number): Promise<{
@@ -24,13 +24,13 @@ export declare class CategoryService {
             postId: number;
         }[];
     } & {
-        name: string;
         id: number;
+        name: string;
         slug: string;
     }>;
     remove(id: number): Promise<{
-        name: string;
         id: number;
+        name: string;
         slug: string;
     }>;
 }

@@ -20,12 +20,18 @@ let AuthController = class AuthController {
         this.authService = authService;
     }
     async login(body) {
-        return await this.authService.login(body.email, body.password);
+        const response = await this.authService.login(body.email, body.password);
+        return {
+            success: true,
+            data: response.data,
+            message: response.message,
+        };
     }
 };
 exports.AuthController = AuthController;
 __decorate([
     (0, common_1.Post)('login'),
+    (0, common_1.HttpCode)(common_1.HttpStatus.OK),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),

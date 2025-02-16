@@ -5,33 +5,58 @@ export declare class UsersController {
     private readonly usersService;
     constructor(usersService: UsersService);
     create(createUserDto: CreateUserDto): Promise<{
-        name: string;
-        email: string;
-        id: number;
-        role: import(".prisma/client").$Enums.Role;
+        success: boolean;
+        data: {
+            firstName: string;
+            lastName: string;
+            email: string;
+            id: number;
+            role: import(".prisma/client").$Enums.Role;
+        };
+        message: string;
     }>;
     findAll(): Promise<{
-        name: string;
-        email: string;
-        id: number;
-        role: import(".prisma/client").$Enums.Role;
-    }[]>;
+        success: boolean;
+        data: {
+            firstName: string;
+            lastName: string;
+            email: string;
+            id: number;
+            role: import(".prisma/client").$Enums.Role;
+        }[];
+        message: string;
+    }>;
     findOne(id: string): Promise<{
-        name: string;
-        email: string;
-        id: number;
-        role: import(".prisma/client").$Enums.Role;
+        success: boolean;
+        data: {
+            firstName: string;
+            lastName: string;
+            email: string;
+            id: number;
+            role: import(".prisma/client").$Enums.Role;
+        };
+        message: string;
     }>;
     update(id: string, updateUserDto: UpdateUserDto): Promise<{
-        name: string;
-        email: string;
-        id: number;
-        role: import(".prisma/client").$Enums.Role;
+        success: boolean;
+        data: {
+            firstName: string;
+            lastName: string;
+            email: string;
+            id: number;
+            role: import(".prisma/client").$Enums.Role;
+        };
+        message: string;
     }>;
     remove(id: string): Promise<{
-        name: string;
-        email: string;
-        id: number;
-        role: import(".prisma/client").$Enums.Role;
+        success: boolean;
+        data: {
+            firstName: string;
+            lastName: string;
+            email: string;
+            id: number;
+            role: import(".prisma/client").$Enums.Role;
+        };
+        message: string;
     }>;
 }

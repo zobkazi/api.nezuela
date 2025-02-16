@@ -22,7 +22,8 @@ let UsersService = class UsersService {
             where: { id },
             select: {
                 id: true,
-                name: true,
+                firstName: true,
+                lastName: true,
                 email: true,
                 password: true,
                 role: true,
@@ -41,7 +42,8 @@ let UsersService = class UsersService {
             where: { email },
             select: {
                 id: true,
-                name: true,
+                firstName: true,
+                lastName: true,
                 email: true,
                 password: true,
                 role: true,
@@ -58,16 +60,24 @@ let UsersService = class UsersService {
         if (existingUser) {
             throw new common_1.ConflictException('User with this email already exists');
         }
+        if (data.password !== data.confirmPassword) {
+            throw new common_1.BadRequestException('Passwords do not match');
+        }
         const hashedPassword = await bcrypt.hash(data.password, 10);
         return this.prisma.user.create({
             data: {
-                name: data.name,
+                firstName: data.firstName,
+                lastName: data.lastName,
                 email: data.email,
                 password: hashedPassword,
+                profileImages: data.profileImages,
+                bio: data.bio,
+                link: data.link,
             },
             select: {
                 id: true,
-                name: true,
+                firstName: true,
+                lastName: true,
                 email: true,
                 role: true,
             },
@@ -77,7 +87,8 @@ let UsersService = class UsersService {
         return this.prisma.user.findMany({
             select: {
                 id: true,
-                name: true,
+                firstName: true,
+                lastName: true,
                 email: true,
                 role: true,
             },
@@ -88,7 +99,8 @@ let UsersService = class UsersService {
             where: { id },
             select: {
                 id: true,
-                name: true,
+                firstName: true,
+                lastName: true,
                 email: true,
                 role: true,
             },
@@ -106,6 +118,9 @@ let UsersService = class UsersService {
             throw new common_1.NotFoundException(`User with ID ${id} not found`);
         }
         if (data.password) {
+            if (data.password !== data.confirmPassword) {
+                throw new common_1.BadRequestException('Passwords do not match');
+            }
             data.password = await bcrypt.hash(data.password, 10);
         }
         return this.prisma.user.update({
@@ -113,7 +128,8 @@ let UsersService = class UsersService {
             data,
             select: {
                 id: true,
-                name: true,
+                firstName: true,
+                lastName: true,
                 email: true,
                 role: true,
             },
@@ -130,7 +146,8 @@ let UsersService = class UsersService {
             where: { id },
             select: {
                 id: true,
-                name: true,
+                firstName: true,
+                lastName: true,
                 email: true,
                 role: true,
             },

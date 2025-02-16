@@ -4,23 +4,23 @@ export declare class TagService {
     private prisma;
     constructor(prisma: PrismaService);
     create(createTagDto: CreateTagDto): Promise<{
-        name: string;
         id: number;
+        name: string;
         slug: string;
     }>;
     findAll(): Promise<{
-        name: string;
         id: number;
+        name: string;
         slug: string;
     }[]>;
     findOne(id: number): Promise<{
-        name: string;
         id: number;
+        name: string;
         slug: string;
     }>;
     remove(id: number): Promise<{
-        name: string;
         id: number;
+        name: string;
         slug: string;
     }>;
 }

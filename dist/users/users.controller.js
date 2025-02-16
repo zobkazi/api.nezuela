@@ -22,19 +22,84 @@ let UsersController = class UsersController {
         this.usersService = usersService;
     }
     async create(createUserDto) {
-        return await this.usersService.create(createUserDto);
+        try {
+            const user = await this.usersService.create(createUserDto);
+            return {
+                success: true,
+                data: user,
+                message: 'User created successfully',
+            };
+        }
+        catch (error) {
+            throw new common_1.HttpException({
+                success: false,
+                message: error.message,
+            }, common_1.HttpStatus.BAD_REQUEST);
+        }
     }
     async findAll() {
-        return await this.usersService.findAll();
+        try {
+            const users = await this.usersService.findAll();
+            return {
+                success: true,
+                data: users,
+                message: 'Users retrieved successfully',
+            };
+        }
+        catch (error) {
+            throw new common_1.HttpException({
+                success: false,
+                message: error.message,
+            }, common_1.HttpStatus.BAD_REQUEST);
+        }
     }
     async findOne(id) {
-        return await this.usersService.findOne(Number(id));
+        try {
+            const user = await this.usersService.findOne(Number(id));
+            return {
+                success: true,
+                data: user,
+                message: 'User retrieved successfully',
+            };
+        }
+        catch (error) {
+            throw new common_1.HttpException({
+                success: false,
+                message: error.message,
+            }, common_1.HttpStatus.NOT_FOUND);
+        }
     }
     async update(id, updateUserDto) {
-        return await this.usersService.update(Number(id), updateUserDto);
+        try {
+            const updatedUser = await this.usersService.update(Number(id), updateUserDto);
+            return {
+                success: true,
+                data: updatedUser,
+                message: 'User updated successfully',
+            };
+        }
+        catch (error) {
+            throw new common_1.HttpException({
+                success: false,
+                message: error.message,
+            }, common_1.HttpStatus.NOT_FOUND);
+        }
     }
     async remove(id) {
-        return await this.usersService.remove(Number(id));
+        try {
+            const removedUser = await this.usersService.remove(Number(id));
+            return {
+                success: true,
+                data: removedUser,
+                message: 'User deleted successfully',
+            };
+        }
+        catch (error) {
+            throw new common_1.HttpException({
+                success: false,
+                message: error.message,
+            }, common_1.HttpStatus.NOT_FOUND);
+        }
     }
 };
 exports.UsersController = UsersController;

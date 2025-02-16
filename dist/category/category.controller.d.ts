@@ -4,8 +4,8 @@ export declare class CategoryController {
     private readonly categoryService;
     constructor(categoryService: CategoryService);
     create(createCategoryDto: CreateCategoryDto): Promise<{
-        name: string;
         id: number;
+        name: string;
         slug: string;
     }>;
     findAll(): Promise<({
@@ -14,8 +14,8 @@ export declare class CategoryController {
             postId: number;
         }[];
     } & {
-        name: string;
         id: number;
+        name: string;
         slug: string;
     })[]>;
     findOne(id: string): Promise<{
@@ -24,13 +24,13 @@ export declare class CategoryController {
             postId: number;
         }[];
     } & {
-        name: string;
         id: number;
+        name: string;
         slug: string;
     }>;
     remove(id: string): Promise<{
-        name: string;
         id: number;
+        name: string;
         slug: string;
     }>;
 }

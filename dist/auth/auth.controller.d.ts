@@ -6,10 +6,15 @@ export declare class AuthController {
         email: string;
         password: string;
     }): Promise<{
-        access_token: string;
-        user: {
-            id: number;
-            email: string;
+        success: boolean;
+        data: {
+            access_token: string;
+            user: {
+                id: number;
+                email: string;
+                role: import(".prisma/client").$Enums.Role;
+            };
         };
+        message: string;
     }>;
 }

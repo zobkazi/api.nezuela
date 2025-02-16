@@ -1,8 +1,8 @@
-// src/users/users.service.ts
 import {
   Injectable,
   ConflictException,
   NotFoundException,
+  BadRequestException,
 } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -13,23 +13,24 @@ import * as bcrypt from 'bcryptjs';
 export class UsersService {
   constructor(private prisma: PrismaService) {}
 
-  // Find user by ID (implement the missing method)
+  // Find user by ID
   async findById(id: number) {
     const user = await this.prisma.user.findUnique({
       where: { id },
       select: {
         id: true,
-        name: true,
+        firstName: true,
+        lastName: true,
         email: true,
-        password: true, // Include password for auth
+        password: true, // Include password for authentication
         role: true,
       },
     });
-    
+
     if (!user) {
       throw new NotFoundException(`User with ID ${id} not found`);
     }
-    
+
     return user;
   }
 
@@ -43,9 +44,10 @@ export class UsersService {
       where: { email },
       select: {
         id: true,
-        name: true,
+        firstName: true,
+        lastName: true,
         email: true,
-        password: true, // Include password for auth
+        password: true, // Include password for authentication
         role: true,
       },
     });
@@ -66,19 +68,29 @@ export class UsersService {
       throw new ConflictException('User with this email already exists');
     }
 
+    // Ensure password and confirmPassword match
+    if (data.password !== data.confirmPassword) {
+      throw new BadRequestException('Passwords do not match');
+    }
+
     // Hash password
     const hashedPassword = await bcrypt.hash(data.password, 10);
 
     // Create new user
     return this.prisma.user.create({
       data: {
-        name: data.name,
+        firstName: data.firstName,
+        lastName: data.lastName,
         email: data.email,
         password: hashedPassword,
+        profileImages: data.profileImages,
+        bio: data.bio,
+        link: data.link,
       },
       select: {
         id: true,
-        name: true,
+        firstName: true,
+        lastName: true,
         email: true,
         role: true,
         // Exclude password from response
@@ -91,7 +103,8 @@ export class UsersService {
     return this.prisma.user.findMany({
       select: {
         id: true,
-        name: true,
+        firstName: true,
+        lastName: true,
         email: true,
         role: true,
         // Exclude password
@@ -105,7 +118,8 @@ export class UsersService {
       where: { id },
       select: {
         id: true,
-        name: true,
+        firstName: true,
+        lastName: true,
         email: true,
         role: true,
         // Exclude password
@@ -130,6 +144,9 @@ export class UsersService {
     }
 
     if (data.password) {
+      if (data.password !== data.confirmPassword) {
+        throw new BadRequestException('Passwords do not match');
+      }
       data.password = await bcrypt.hash(data.password, 10);
     }
 
@@ -138,7 +155,8 @@ export class UsersService {
       data,
       select: {
         id: true,
-        name: true,
+        firstName: true,
+        lastName: true,
         email: true,
         role: true,
         // Exclude password
@@ -160,7 +178,8 @@ export class UsersService {
       where: { id },
       select: {
         id: true,
-        name: true,
+        firstName: true,
+        lastName: true,
         email: true,
         role: true,
         // Exclude password

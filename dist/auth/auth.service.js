@@ -32,12 +32,18 @@ let AuthService = class AuthService {
             userId: user.id,
             email: user.email,
         };
+        const access_token = this.jwtService.sign(payload, { expiresIn: '1h' });
         return {
-            access_token: this.jwtService.sign(payload),
-            user: {
-                id: user.id,
-                email: user.email,
-            }
+            success: true,
+            data: {
+                access_token,
+                user: {
+                    id: user.id,
+                    email: user.email,
+                    role: user.role,
+                },
+            },
+            message: 'Login successful',
         };
     }
 };
