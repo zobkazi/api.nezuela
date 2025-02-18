@@ -7,6 +7,8 @@ export declare class ProductController {
     create(createProductDto: CreateProductDto): Promise<{
         id: number;
         name: string;
+        createdAt: Date;
+        updatedAt: Date;
         description: string;
         price: import("@prisma/client/runtime/library").Decimal;
         discountPercentage: number;
@@ -15,12 +17,12 @@ export declare class ProductController {
         brand: string;
         thumbnail: string;
         images: string[];
-        createdAt: Date;
-        updatedAt: Date;
     }>;
     findAll(page?: number, limit?: number, sortBy?: string, order?: 'asc' | 'desc', search?: string, minPrice?: number, maxPrice?: number, brand?: string): Promise<{
         id: number;
         name: string;
+        createdAt: Date;
+        updatedAt: Date;
         description: string;
         price: import("@prisma/client/runtime/library").Decimal;
         discountPercentage: number;
@@ -29,12 +31,12 @@ export declare class ProductController {
         brand: string;
         thumbnail: string;
         images: string[];
-        createdAt: Date;
-        updatedAt: Date;
     }[]>;
     findOne(id: string): Promise<{
         id: number;
         name: string;
+        createdAt: Date;
+        updatedAt: Date;
         description: string;
         price: import("@prisma/client/runtime/library").Decimal;
         discountPercentage: number;
@@ -43,12 +45,12 @@ export declare class ProductController {
         brand: string;
         thumbnail: string;
         images: string[];
-        createdAt: Date;
-        updatedAt: Date;
     }>;
     update(id: string, updateProductDto: UpdateProductDto): Promise<{
         id: number;
         name: string;
+        createdAt: Date;
+        updatedAt: Date;
         description: string;
         price: import("@prisma/client/runtime/library").Decimal;
         discountPercentage: number;
@@ -57,12 +59,12 @@ export declare class ProductController {
         brand: string;
         thumbnail: string;
         images: string[];
-        createdAt: Date;
-        updatedAt: Date;
     }>;
     remove(id: string): Promise<{
         id: number;
         name: string;
+        createdAt: Date;
+        updatedAt: Date;
         description: string;
         price: import("@prisma/client/runtime/library").Decimal;
         discountPercentage: number;
@@ -71,7 +73,5 @@ export declare class ProductController {
         brand: string;
         thumbnail: string;
         images: string[];
-        createdAt: Date;
-        updatedAt: Date;
     }>;
 }

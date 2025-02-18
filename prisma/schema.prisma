@@ -20,6 +20,8 @@ model User {
   comments      Comment[]
   posts         Post[]
   Order         Order[]
+
+  Payment Payment[]
 }
 
 model Post {
@@ -40,7 +42,7 @@ model Post {
 
 model Product {
   id                 Int      @id @default(autoincrement())
-  name               String @unique
+  name               String   @unique
   description        String
   price              Decimal  @db.Decimal(10, 2)
   discountPercentage Float
@@ -55,6 +57,28 @@ model Product {
   categories ProductCategory[] @relation("ProductToCategory")
   orders     OrderItem[]
 }
+
+model Payment {
+   id          Int        @id @default(autoincrement())
+   merchantId  String
+   orderId     Int       @unique
+   userId      Int
+   amount      Decimal   @db.Decimal(10, 2)
+   paymentRefId String
+   clientMobileNo String
+   status      PaymentStatus @default(PENDING)
+   transactionId String? @unique
+   paymentMethod String
+   orderDateTime   DateTime  @default(now())
+   issuerPaymentDateTime DateTime?  
+   additionalMerchantInfo String?   
+   cancelIssuerDateTime DateTime?   
+   cancelIssuerRefNo String 
+   
+   order       Order     @relation(fields: [orderId], references: [id])
+   user        User      @relation(fields: [userId], references: [id])
+}
+
 
 model PostCategory {
   postId     Int
@@ -83,6 +107,8 @@ model Order {
   updatedAt   DateTime    @updatedAt
   user        User        @relation(fields: [userId], references: [id])
   orderItems  OrderItem[]
+
+  Payment Payment[]
 }
 
 model OrderItem {
@@ -140,4 +166,11 @@ enum OrderStatus {
   SHIPPED
   DELIVERED
   CANCELLED
+}
+
+enum PaymentStatus {
+  PENDING
+  COMPLETED
+  FAILED
+  REFUNDED
 }

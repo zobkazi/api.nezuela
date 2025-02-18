@@ -5,14 +5,14 @@ export declare class PostController {
     constructor(postService: PostService);
     create(createPostDto: CreatePostDto): Promise<{
         id: number;
-        createdAt: Date;
-        updatedAt: Date;
         title: string;
-        slug: string;
         content: string | null;
-        excerpt: string | null;
+        slug: string;
         authorId: number;
         coverImage: string | null;
+        excerpt: string | null;
+        createdAt: Date;
+        updatedAt: Date;
     }>;
     findAll(page?: string, limit?: string, search?: string, category?: string, tags?: string, sortBy?: 'asc' | 'desc'): Promise<{
         posts: import(".prisma/client").Post[];
@@ -20,35 +20,35 @@ export declare class PostController {
     }>;
     findOne(id: string): Promise<{
         id: number;
-        createdAt: Date;
-        updatedAt: Date;
         title: string;
-        slug: string;
         content: string | null;
-        excerpt: string | null;
+        slug: string;
         authorId: number;
         coverImage: string | null;
+        excerpt: string | null;
+        createdAt: Date;
+        updatedAt: Date;
     }>;
     update(id: string, updatePostDto: UpdatePostDto): Promise<{
         id: number;
-        createdAt: Date;
-        updatedAt: Date;
         title: string;
-        slug: string;
         content: string | null;
-        excerpt: string | null;
+        slug: string;
         authorId: number;
         coverImage: string | null;
+        excerpt: string | null;
+        createdAt: Date;
+        updatedAt: Date;
     }>;
     delete(id: string): Promise<{
         id: number;
-        createdAt: Date;
-        updatedAt: Date;
         title: string;
-        slug: string;
         content: string | null;
-        excerpt: string | null;
+        slug: string;
         authorId: number;
         coverImage: string | null;
+        excerpt: string | null;
+        createdAt: Date;
+        updatedAt: Date;
     }>;
 }

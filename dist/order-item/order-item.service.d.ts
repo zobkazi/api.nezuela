@@ -5,14 +5,28 @@ export declare class OrderItemService {
     constructor(prisma: PrismaService);
     create(createOrderItemDto: CreateOrderItemDto): Promise<{
         id: number;
+        createdAt: Date;
+        updatedAt: Date;
+        price: import("@prisma/client/runtime/library").Decimal;
         orderId: number;
         productId: number;
         quantity: number;
-        price: import("@prisma/client/runtime/library").Decimal;
-        createdAt: Date;
-        updatedAt: Date;
     }>;
     findAll(): Promise<({
+        product: {
+            id: number;
+            name: string;
+            createdAt: Date;
+            updatedAt: Date;
+            description: string;
+            price: import("@prisma/client/runtime/library").Decimal;
+            discountPercentage: number;
+            rating: number;
+            stock: number;
+            brand: string;
+            thumbnail: string;
+            images: string[];
+        };
         order: {
             id: number;
             createdAt: Date;
@@ -21,27 +35,13 @@ export declare class OrderItemService {
             totalAmount: import("@prisma/client/runtime/library").Decimal;
             status: import(".prisma/client").$Enums.OrderStatus;
         };
-        product: {
-            id: number;
-            price: import("@prisma/client/runtime/library").Decimal;
-            createdAt: Date;
-            updatedAt: Date;
-            name: string;
-            description: string;
-            discountPercentage: number;
-            rating: number;
-            stock: number;
-            brand: string;
-            thumbnail: string;
-            images: string[];
-        };
     } & {
         id: number;
+        createdAt: Date;
+        updatedAt: Date;
+        price: import("@prisma/client/runtime/library").Decimal;
         orderId: number;
         productId: number;
         quantity: number;
-        price: import("@prisma/client/runtime/library").Decimal;
-        createdAt: Date;
-        updatedAt: Date;
     })[]>;
 }

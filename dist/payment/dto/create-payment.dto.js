@@ -9,39 +9,56 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.FindAllQueryDto = void 0;
+exports.CreatePaymentDto = void 0;
 const class_validator_1 = require("class-validator");
-class FindAllQueryDto {
+class CreatePaymentDto {
 }
-exports.FindAllQueryDto = FindAllQueryDto;
+exports.CreatePaymentDto = CreatePaymentDto;
+__decorate([
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], CreatePaymentDto.prototype, "merchantId", void 0);
 __decorate([
     (0, class_validator_1.IsInt)(),
-    (0, class_validator_1.IsOptional)(),
     __metadata("design:type", Number)
-], FindAllQueryDto.prototype, "page", void 0);
+], CreatePaymentDto.prototype, "orderId", void 0);
 __decorate([
     (0, class_validator_1.IsInt)(),
-    (0, class_validator_1.IsOptional)(),
     __metadata("design:type", Number)
-], FindAllQueryDto.prototype, "limit", void 0);
+], CreatePaymentDto.prototype, "userId", void 0);
+__decorate([
+    (0, class_validator_1.IsDecimal)(),
+    __metadata("design:type", Number)
+], CreatePaymentDto.prototype, "amount", void 0);
 __decorate([
     (0, class_validator_1.IsString)(),
-    (0, class_validator_1.IsOptional)(),
     __metadata("design:type", String)
-], FindAllQueryDto.prototype, "sortBy", void 0);
-__decorate([
-    (0, class_validator_1.IsEnum)(['asc', 'desc']),
-    (0, class_validator_1.IsOptional)(),
-    __metadata("design:type", String)
-], FindAllQueryDto.prototype, "sortOrder", void 0);
+], CreatePaymentDto.prototype, "paymentRefId", void 0);
 __decorate([
     (0, class_validator_1.IsString)(),
-    (0, class_validator_1.IsOptional)(),
     __metadata("design:type", String)
-], FindAllQueryDto.prototype, "search", void 0);
+], CreatePaymentDto.prototype, "clientMobileNo", void 0);
 __decorate([
     (0, class_validator_1.IsString)(),
-    (0, class_validator_1.IsOptional)(),
     __metadata("design:type", String)
-], FindAllQueryDto.prototype, "filter", void 0);
-//# sourceMappingURL=find-all-query.dto.js.map
+], CreatePaymentDto.prototype, "status", void 0);
+__decorate([
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], CreatePaymentDto.prototype, "paymentMethod", void 0);
+__decorate([
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], CreatePaymentDto.prototype, "transactionId", void 0);
+__decorate([
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], CreatePaymentDto.prototype, "additionalMerchantInfo", void 0);
+__decorate([
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], CreatePaymentDto.prototype, "cancelIssuerRefNo", void 0);
+//# sourceMappingURL=create-payment.dto.js.map
