@@ -10,6 +10,9 @@ import { TagModule } from './tag/tag.module';
 import { CategoryModule } from './category/category.module';
 import {ThrottlerModule} from '@nestjs/throttler'
 import { ProductModule } from './product/product.module';
+import { ProductCategoryModule } from './product-category/product-category.module';
+import { OrderItemModule } from './order-item/order-item.module';
+import { OrderModule } from './order/order.module';
 
 
 @Module({
@@ -26,6 +29,9 @@ import { ProductModule } from './product/product.module';
       limit: 10,
     }]),
     ProductModule,
+    ProductCategoryModule,
+    OrderItemModule,
+    OrderModule,
   ],
   controllers: [AppController],
   providers: [AppService],

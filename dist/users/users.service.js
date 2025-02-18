@@ -70,7 +70,7 @@ let UsersService = class UsersService {
                 lastName: data.lastName,
                 email: data.email,
                 password: hashedPassword,
-                profileImages: data.profileImages,
+                profileImages: data.profileImage,
                 bio: data.bio,
                 link: data.link,
             },

@@ -14,7 +14,7 @@ export class PostService {
       where: { slug: data.slug },
     });
     if (existingPost) {
-      throw new ConflictException('Post already exists');
+      throw new ConflictException('Post already exists!');
     }
 
     return this.prisma.post.create({

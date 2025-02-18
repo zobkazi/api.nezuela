@@ -4,7 +4,7 @@ export declare class CreateUserDto {
     email: string;
     password: string;
     confirmPassword: string;
-    profileImages?: string;
+    profileImage: string;
     bio?: string;
     link?: string;
 }

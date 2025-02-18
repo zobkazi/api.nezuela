@@ -41,7 +41,7 @@ __decorate([
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsOptional)(),
     __metadata("design:type", String)
-], CreateUserDto.prototype, "profileImages", void 0);
+], CreateUserDto.prototype, "profileImage", void 0);
 __decorate([
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsOptional)(),

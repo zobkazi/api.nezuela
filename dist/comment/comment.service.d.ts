@@ -6,60 +6,60 @@ export declare class CommentService {
     constructor(prisma: PrismaService);
     create(CreateCommentDto: CreateCommentDto): Promise<{
         id: number;
-        content: string;
         createdAt: Date;
+        content: string;
         postId: number;
         userId: number;
     }>;
     findAll(): Promise<({
         post: {
             id: number;
-            title: string;
-            content: string | null;
-            slug: string;
-            authorId: number;
-            coverImage: string | null;
-            excerpt: string | null;
             createdAt: Date;
             updatedAt: Date;
+            title: string;
+            slug: string;
+            content: string | null;
+            excerpt: string | null;
+            authorId: number;
+            coverImage: string | null;
         };
     } & {
         id: number;
-        content: string;
         createdAt: Date;
+        content: string;
         postId: number;
         userId: number;
     })[]>;
     findOne(id: number): Promise<{
         post: {
             id: number;
-            title: string;
-            content: string | null;
-            slug: string;
-            authorId: number;
-            coverImage: string | null;
-            excerpt: string | null;
             createdAt: Date;
             updatedAt: Date;
+            title: string;
+            slug: string;
+            content: string | null;
+            excerpt: string | null;
+            authorId: number;
+            coverImage: string | null;
         };
     } & {
         id: number;
-        content: string;
         createdAt: Date;
+        content: string;
         postId: number;
         userId: number;
     }>;
     update(id: number, updateCommentDto: UpdateCommentDto): Promise<{
         id: number;
-        content: string;
         createdAt: Date;
+        content: string;
         postId: number;
         userId: number;
     }>;
     remove(id: number): Promise<{
         id: number;
-        content: string;
         createdAt: Date;
+        content: string;
         postId: number;
         userId: number;
     }>;

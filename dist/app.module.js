@@ -18,6 +18,10 @@ const comment_module_1 = require("./comment/comment.module");
 const tag_module_1 = require("./tag/tag.module");
 const category_module_1 = require("./category/category.module");
 const throttler_1 = require("@nestjs/throttler");
+const product_module_1 = require("./product/product.module");
+const product_category_module_1 = require("./product-category/product-category.module");
+const order_item_module_1 = require("./order-item/order-item.module");
+const order_module_1 = require("./order/order.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -35,6 +39,10 @@ exports.AppModule = AppModule = __decorate([
                     ttl: 60000,
                     limit: 10,
                 }]),
+            product_module_1.ProductModule,
+            product_category_module_1.ProductCategoryModule,
+            order_item_module_1.OrderItemModule,
+            order_module_1.OrderModule,
         ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],

@@ -13,12 +13,13 @@ model User {
   lastName      String
   email         String    @unique
   password      String
-  profileImages String[]?
+  profileImages String?
   bio           String?
   link          String?
   role          Role      @default(USER)
   comments      Comment[]
   posts         Post[]
+  Order         Order[]
 }
 
 model Post {
@@ -39,7 +40,7 @@ model Post {
 
 model Product {
   id                 Int      @id @default(autoincrement())
-  name               String
+  name               String @unique
   description        String
   price              Decimal  @db.Decimal(10, 2)
   discountPercentage Float
