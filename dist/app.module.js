@@ -17,6 +17,7 @@ const post_module_1 = require("./post/post.module");
 const comment_module_1 = require("./comment/comment.module");
 const tag_module_1 = require("./tag/tag.module");
 const category_module_1 = require("./category/category.module");
+const throttler_1 = require("@nestjs/throttler");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -30,6 +31,10 @@ exports.AppModule = AppModule = __decorate([
             comment_module_1.CommentModule,
             tag_module_1.TagModule,
             category_module_1.CategoryModule,
+            throttler_1.ThrottlerModule.forRoot([{
+                    ttl: 60000,
+                    limit: 10,
+                }]),
         ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],

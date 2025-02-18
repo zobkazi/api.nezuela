@@ -18,11 +18,11 @@ async function bootstrap() {
     origin: '*',
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     allowedHeaders: 'Content-Type, Authorization',
-  })
+  });
 
   const config = new DocumentBuilder()
     .setTitle('New Swagger')
-    .setDescription('  I am a dedicated and passionate Full Stack Developer with a strong background in creating scalable and efficient web applications. My expertise lies in both frontend and backend development, allowing me to build comprehensive digital solutions from the ground up. Here’s a bit more about who I am and where you can find me online:')
+    .setDescription('I am a dedicated and passionate Full Stack Developer with a strong background in creating scalable and efficient web applications. My expertise lies in both frontend and backend development, allowing me to build comprehensive digital solutions from the ground up. Here’s a bit more about who I am and where you can find me online:')
     .setVersion('1.0')
     .addTag('cats')
     .build();

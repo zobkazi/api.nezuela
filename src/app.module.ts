@@ -9,6 +9,7 @@ import { CommentModule } from './comment/comment.module';
 import { TagModule } from './tag/tag.module';
 import { CategoryModule } from './category/category.module';
 import {ThrottlerModule} from '@nestjs/throttler'
+import { ProductModule } from './product/product.module';
 
 
 @Module({
@@ -24,6 +25,7 @@ import {ThrottlerModule} from '@nestjs/throttler'
       ttl: 60000,
       limit: 10,
     }]),
+    ProductModule,
   ],
   controllers: [AppController],
   providers: [AppService],
